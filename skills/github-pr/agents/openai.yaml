@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitHub PR"
+  short_description: "Create branch, commits, push, and PR"
+  default_prompt: "Use $github-pr to turn my current changes into a GitHub pull request."
