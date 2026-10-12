@@ -20,12 +20,13 @@ Then invoke a workflow in your coding agent:
 $engineering-skills init
 $engineering-skills plan Add password reset
 $engineering-skills implementation Implement the password-reset plan
+$engineering-skills pr-review Review the password-reset changes
 $engineering-skills github-pr Create a PR for these changes
 ```
 
 The install preserves shared references and sibling skills. The workflow examples above are agent prompts, not shell commands.
 
-`plan` includes structural design review. `implementation` includes structural review at substantial checkpoints and independent `pr-review` when required, with repairs and re-review. You can also invoke `$engineering-skills pr-review Review the password-reset changes` separately; an existing review can be reused while its scope, snapshot, and evidence still apply.
+`plan` includes structural design review. `implementation` includes structural review at substantial checkpoints and independent `pr-review` when required, with repairs and re-review. The example makes `pr-review` explicit before PR creation; an existing review can be reused while its scope, snapshot, and evidence still apply.
 
 ## The SDLC
 
