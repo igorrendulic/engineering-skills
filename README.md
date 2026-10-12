@@ -9,9 +9,7 @@ A small set of AI coding-agent skills for taking work from an idea to a verified
 Install the full bundle into your user-level skills directory:
 
 ```sh
-mkdir -p ~/.agents/skills/engineering-skills && \
-  curl -fsSL https://codeload.github.com/igorrendulic/engineering-skills/tar.gz/HEAD | \
-  tar -xz --strip-components=1 -C ~/.agents/skills/engineering-skills
+git clone https://github.com/igorrendulic/engineering-skills.git ~/.agents/skills/engineering-skills
 ```
 
 Then invoke a workflow in your coding agent:
