@@ -74,6 +74,11 @@ presenting the proposed content without writing.
 
 ## 3. Write the Root File
 
+Write durable project guidance. Keep current feature status, dirty-file lists,
+and one-off execution restrictions in the conversation or feature plan unless the
+user intends them as standing project rules. Continue honoring those restrictions
+for the current task; do not turn temporary context into repository-wide policy.
+
 Adapt the user's example when supplied; otherwise aim for a short, easily scanned
 file of a few dozen lines, expanding only for useful project-specific guidance.
 Use only applicable sections, with concrete paths and responsibilities rather

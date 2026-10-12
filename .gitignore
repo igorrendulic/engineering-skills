@@ -1,1 +1,20 @@
 .DS_Store
+evals/runs/
+__pycache__/
+
+# Python bytecode and local environments
+*.py[cod]
+.venv/
+venv/
+
+# Local environment variables (keep shareable examples)
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Editor temporary files
+*.swp
+*.swo
+*~
