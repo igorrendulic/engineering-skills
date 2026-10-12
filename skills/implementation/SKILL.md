@@ -106,6 +106,33 @@ appropriate. Make routine implementation choices autonomously within the agreed
 scope; ask only when an unresolved decision changes requirements, scope, or
 authorization and cannot be settled from available evidence.
 
+#### Investigate Failures Before Fixing
+
+For bug reports, failing checks, or unexpected behavior, establish the cause before
+changing code. Scale the investigation to the problem; an obvious defect needs
+only a short evidence-backed explanation.
+
+1. **Establish the failure.** Identify expected versus actual behavior. Reproduce
+   through the relevant entry point when practical, recording the triggering
+   input, environment, and error. If reproduction is unavailable, use available
+   logs, traces, or other evidence and state the limitation.
+2. **Localize the cause.** Trace the failing behavior through relevant code,
+   callers, and state. Distinguish the underlying cause from its symptoms and
+   separate pre-existing failures from regressions introduced by current work.
+3. **Test a hypothesis.** State the likely cause and use the smallest targeted
+   check or experiment that can support or reject it. Reuse decisive evidence
+   already available. Avoid stacking speculative fixes; if a hypothesis fails,
+   reassess before making another change.
+4. **Fix and verify.** Apply the smallest change that addresses the supported
+   cause. Add or update a regression test when practical and meaningful,
+   preferably demonstrating the failure before the fix. Verify the original
+   failing case and relevant neighboring behavior through the normal
+   implementation checks. Do not weaken tests or hide errors to obtain a pass.
+
+If the cause remains uncertain, report what is known, which hypotheses were
+tested, and the next evidence needed. Do not present a speculative change as a
+verified fix.
+
 ## 4. Review Structure
 
 At substantial checkpoints, particularly when ownership, interfaces, or

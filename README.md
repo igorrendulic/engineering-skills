@@ -25,26 +25,43 @@ $engineering-skills github-pr Create a PR for these changes
 
 The install preserves shared references and sibling skills. The workflow examples above are agent prompts, not shell commands.
 
+`plan` includes structural design review. `implementation` includes structural review at substantial checkpoints and independent `pr-review` when required, with repairs and re-review. You can also invoke `$engineering-skills pr-review Review the password-reset changes` separately; an existing review can be reused while its scope, snapshot, and evidence still apply.
+
 ## The SDLC
 
 ```mermaid
 flowchart TD
-    A["init: establish project instructions"] --> B["plan: define goal, scope, and design"]
-    B --> C["structural-review: assess the design"]
-    C --> D{"Plan ready?"}
-    D -->|Revise| B
-    D -->|Yes, implementation authorized| E["implementation: build and verify increments"]
-    E --> F["structural-review: assess substantial changes"]
-    F --> G["Verify the complete outcome"]
-    G --> H{"Independent review required?"}
-    H -->|Yes| I["pr-review: fresh-context correctness review"]
-    I --> J{"Blocking findings or missing evidence?"}
-    J -->|Resolve within scope| E
-    J -->|None, checks pass| K["github-pr: create or update the PR"]
-    H -->|No, checks pass| K
+    A["init: establish project instructions"] --> B
+
+    subgraph Planning["plan workflow"]
+        B["Define goal, scope, and design"] --> C["structural-review: assess the design"]
+        C --> D["Resolve findings; define tasks and verification"]
+        D --> P{"Plan ready?"}
+        P -->|Revise within scope| B
+        P -->|Blocked| Q["Report blockers; plan remains not ready"]
+    end
+
+    P -->|Yes, implementation authorized| E
+
+    subgraph Implementation["implementation workflow"]
+        E["Build or repair and verify increments"] --> F["structural-review: at substantial checkpoints"]
+        F --> S{"Required structural review complete, with no unresolved High or Medium findings?"}
+        S -->|Yes or not required| G["Verify the complete outcome"]
+        S -->|No| R
+        G --> H{"Independent review required?"}
+        H -->|Yes| I["pr-review: fresh-context correctness review"]
+        I --> J{"No blocking findings and required verification satisfied?"}
+        H -->|No| J
+        J -->|No| R{"Can resolve within scope and remaining repair limit?"}
+        R -->|Yes| E
+        R -->|No: limit, no progress, or blocked| X["Preserve work; report unresolved findings or evidence gaps"]
+        J -->|Yes| V["Retain verified implementation; report results"]
+    end
+
+    V -->|PR delivery authorized| K["github-pr: create or update the PR"]
 ```
 
-Start at the stage that fits the work; small, obvious changes can go straight to implementation. Independent review is required for substantial behavior changes and changes affecting security, data integrity, or shared/public contracts. Repair defaults to at most three rounds before reporting unresolved issues. Publishing, merging, and deployment follow the user's authorization.
+Start at the stage that fits the work; small, obvious changes can go straight to implementation. Review steps inside each workflow are invoked by that workflow. Independent review is required for substantial behavior changes, changes affecting security, data integrity, or shared/public contracts, and whenever the user or repository requires it. Explicit review waivers must be disclosed. The review-and-fix loop defaults to at most three repair rounds, each including a fresh follow-up review; it stops earlier when progress or authorization is blocked. Missing required evidence prevents completion. Publishing, merging, and deployment follow the user's authorization.
 
 ## Workflows
 
