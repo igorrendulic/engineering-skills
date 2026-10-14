@@ -24,7 +24,9 @@ class InstallerTests(unittest.TestCase):
         # Exercise real Git without contacting GitHub or touching user config.
         self.git("config", "--global", f"url.{self.source}.insteadOf", REPOSITORY)
         self.git("init", "-b", "master", self.source)
-        for name in ("SKILL.md", "skills/plan/SKILL.md", "references/plan-lifecycle.md"):
+        self.bundle_files = ("SKILL.md", "skills/plan/SKILL.md", "references/plan-lifecycle.md",
+                             "plugin.json", ".agents/plugins/marketplace.json", "skills/help/SKILL.md")
+        for name in self.bundle_files:
             path = self.source / name
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("initial\n")
@@ -54,8 +56,8 @@ class InstallerTests(unittest.TestCase):
         self.commit(self.source)
         self.install()
         self.assertEqual((self.target / "SKILL.md").read_text(), "updated\n")
-        self.assertTrue((self.target / "skills/plan/SKILL.md").is_file())
-        self.assertTrue((self.target / "references/plan-lifecycle.md").is_file())
+        for name in self.bundle_files[1:]:
+            self.assertEqual((self.target / name).read_text(), "initial\n")
 
     def test_existing_non_repository_is_preserved(self):
         self.target.mkdir(parents=True)

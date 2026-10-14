@@ -1,4 +1,37 @@
-# Local skill improvement eval
+# Local checks and skill improvement eval
+
+## Package and installer checks
+
+Run the standard-library regression suite without model calls:
+
+```sh
+python3 -m unittest discover -s evals -v
+```
+
+With Codex CLI installed, separately check the actual local package installation
+and discovery (tested with 0.162.1):
+
+```sh
+python3 evals/plugin_smoke.py
+```
+
+The smoke check copies the package into a temporary local marketplace, installs
+it into a disposable home, and queries app-server `skills/list`. It requires all
+seven enabled, namespaced skills with the correct plugin ownership and installed
+paths, and checks internal instruction references. It uses no credentials or model
+inference and does not change the personal plugin installation. Each subprocess
+or metadata request has a timeout; temporary files are removed after the check.
+An alternate checkout can be checked with `--package /absolute/path/to/checkout`.
+
+These checks validate packaging, not help's decisions. For behavioral verification,
+use separate disposable plugin and standalone sessions. Exercise general help,
+`help plan`, `help PR review`, an unknown topic, bare standalone invocation, and
+help containing a quoted implementation request. Inspect the answers and loaded
+skill paths, and compare project files and Git state before and after help. Check
+that both native and standalone plan invocations select their intended workflow.
+Keep transcripts and installed-package fingerprints with local run evidence.
+
+## Full SDLC evaluation
 
 Run a small development task through this repository's `init`, `plan`,
 `implementation` (including structural/native review), and description-only
@@ -15,8 +48,9 @@ python3 evals/run.py --model gpt-6.1-sol
 python3 evals/run.py --model gpt-6.1-sol --variant sparse-ids
 ```
 
-The runner uses a disposable Git repository and isolated agent home, copies only
-this skill bundle, and temporarily copies local authentication when using login.
+The runner tests the standalone dispatcher. It uses a disposable Git repository
+and isolated agent home, copies only this skill bundle, and temporarily copies
+local authentication when using login.
 Credentials are removed with the temporary home and never intentionally included
 in run artifacts. Agent shell networking is enabled for native review's model
 connection. Use this runner with the trusted local fixture and skills only.
