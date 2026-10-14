@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "engineering-skills",
+  "version": "0.1.0",
+  "description": "Plan, implement, review, and prepare pull requests with focused engineering workflows."
+}

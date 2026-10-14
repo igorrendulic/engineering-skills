@@ -1,9 +1,9 @@
 # Engineering Skills plugin namespace and help
 
-Feature: `plugin-namespace-help`  
-Lifecycle: **Active**  
-Readiness: **Ready for implementation**  
-Execution: Planning requested; implementation has not started.  
+Feature: `plugin-namespace-help`
+Lifecycle: **Completed**
+Readiness: **Ready for implementation**
+Execution: Implemented and verified in the user-selected worktree; PR delivery requested.
 Date: 2026-10-14
 
 ## Goal and scope
@@ -259,11 +259,67 @@ asked to explain. Use separate temporary installations, fresh configuration for
 each smoke, correct plugin ownership/path assertions, and behavioral help cases.
 Keep version updates consistent for later releases; do not rely on a stale cache.
 
-The repository's `.agents` path is read-only under the current session permission
-profile. Creating its marketplace file during implementation requires the normal
-filesystem approval mechanism. This is an execution permission boundary, not an
-unresolved design choice; planning does not modify it or request installation.
+The original checkout's `.agents` path is read-only under the session permission
+profile. The user-selected temporary worktree permits these task changes without
+modifying the original checkout. Later integration into a restricted path must
+use the normal filesystem approval mechanism.
 
 Requirements, material design choices, structural review, task acceptance, and
 verification coverage are complete. **Ready for implementation.** No unresolved
 planning decisions. This status does not mean implementation or its checks ran.
+
+## Implementation record
+
+- Workspace: `/private/tmp/engineering-skills-plugin-namespace-help`.
+- Branch: `feature/plugin-namespace-help`.
+- Starting commit: `661b9f1e116577a238fba8ccd1a39193a38e7fbf`.
+- User explicitly selected a separate worktree from the current HEAD.
+- Copied only this feature's untracked plan/checklist from the original checkout.
+- Baseline: all 22 existing unittest checks passed before changes.
+
+- Tasks 1–4 implemented and verified: portable manifest, repository marketplace,
+  help/catalog routing, README installation guidance, package checks, and installer
+  fixture coverage. `install.sh` and the six workflow bodies are unchanged.
+- Removed the optional unqualified GitHub PR UI default prompt; retained display
+  metadata and default invocation policy. This avoids a wrong-name prompt in the
+  plugin while preserving standalone dispatcher use.
+- Package tests first failed on the absent manifest, then passed after packaging.
+  All 25 standard-library tests pass, including missing-reference and wrong-name
+  rejection and legacy installer preservation.
+- `python3 evals/plugin_smoke.py`: PASS. Actual local installation and app-server
+  discovery expose all seven enabled namespaced skills with correct ownership and
+  cached paths. Source and installed relative instruction references resolve.
+- Skill-creator `quick_validate.py`: root dispatcher and help both valid.
+- Structural code review: **Review status: Complete. No significant structural
+  issues identified.** One manifest and root catalog; shared checks reused by the
+  opt-in smoke; legacy runtime and existing workflows retained. No new framework,
+  copied workflow implementation, or configuration migration engine.
+- Eight behavioral requests passed across five fresh agent contexts: native
+  general help, unknown topic, plan help with an imperative quoted example, PR
+  review alias, bare standalone dispatcher, standalone plan help, native plan
+  routing, and standalone plan routing. All five disposable projects retain
+  their files, Git index, branch, and original commit. The installed package's
+  fingerprint is unchanged. Behavioral agents used explicit installed skill
+  paths; actual native registration was verified independently through CLI
+  metadata. This does not verify a desktop skill picker.
+- Temporary evidence: `/private/tmp/engineering-help-evidence-rlt3i0kc/` contains
+  installed-package fingerprints, behavioral-results.json, the native review
+  prompt/snapshot, and native-review.log. Agent responses/tool traces are retained
+  in this conversation. The paid full SDLC evaluation was not run.
+- Native review's initial app-server startup was sandbox-blocked; the authorized
+  escalated read-only retry found no supported defects and independently passed
+  all 25 tests, the metadata smoke, full-checkout install/discovery, and diff checks.
+  An evidence-only follow-up reviewed the completed behavioral results and
+  independently checked all source/package fingerprints and fixture state.
+  Final disposition: **No blocking findings**. No material evidence gaps for the
+  CLI scope. Zero code repair rounds; no source changes between review passes.
+- At implementation handoff, `git diff --check` passed and README file links
+  resolved. Only task changes existed in the feature worktree; the original
+  checkout was unchanged by implementation.
+- All five tasks are complete. At implementation handoff, changes were retained
+  uncommitted without push, merge, publication, personal installation, or legacy
+  removal. The user subsequently requested GitHub PR delivery. Desktop picker
+  behavior remains unverified.
+- PR preparation: local master added the original planning files in `627a3ba`;
+  retain that same-feature planning commit and this completed plan in the PR branch.
+  Reviewed source fingerprints still match; no implementation change is needed.
