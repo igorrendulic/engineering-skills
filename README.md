@@ -43,39 +43,6 @@ Help explains workflows, inputs, outputs, and examples without executing them.
 The workflow examples are agent prompts, not shell commands. The package preserves
 shared references and sibling skills.
 
-### Standalone installation (legacy)
-
-For agents using standalone skills, install or update the full bundle:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/igorrendulic/engineering-skills/master/install.sh | bash
-```
-
-The script requires Git and a POSIX shell (macOS/Linux). It installs into `~/.agents/skills/engineering-skills`, reuses an existing clone, and fast-forwards it from GitHub's `master` branch on later runs. It stops on local changes, divergent history, a different repository, or a conflicting path; it never resets or deletes your files. Symlinks are left untouched; update their source checkout manually.
-
-From an existing checkout, run `sh install.sh`. For later updates, rerun the
-download command or run `sh ~/.agents/skills/engineering-skills/install.sh`.
-To choose another location, pass the destination:
-`sh install.sh /path/to/skills/engineering-skills`.
-
-Use the dispatcher with a space before the command:
-
-```text
-$engineering-skills help
-$engineering-skills help plan
-$engineering-skills plan Add password reset
-$engineering-skills implementation Implement the password-reset plan
-```
-
-A bare `$engineering-skills` displays help. Standalone installation does not
-register native colon names.
-
-Choose one installation mode per host. When migrating, check the legacy checkout
-for local changes, then disable its skills through your host or relocate it outside
-the host's skill discovery directories. Keep the files if you need to preserve
-local work. The plugin does not remove or disable the legacy installation; leaving
-both discoverable can expose both generic and namespaced copies.
-
 `plan` includes structural design review. `implementation` includes structural review at substantial checkpoints and independent `pr-review` when required, with repairs and re-review. The example makes `pr-review` explicit before PR creation; an existing review can be reused while its scope, snapshot, and evidence still apply.
 
 ## The SDLC
