@@ -55,13 +55,58 @@ Inspect working-tree changes before editing. Preserve unrelated work and keep
 fixes tied to the requested outcome. Note material out-of-scope issues without
 turning them into additional work.
 
-Before editing in a Git repository, identify whether a branch or worktree already
-belongs to this exact task. Reuse it when it has the intended code baseline and
-will not mix unrelated work. Otherwise, prefer a dedicated branch and worktree
-for substantial implementation, following repository conventions and existing
-user instructions. A separate worktree is optional for a small, isolated edit.
-Record the branch, worktree path, and starting commit in existing task notes or
-the progress report; if no commit exists yet, state that limitation.
+### Select the Workspace and Branch Before Editing
+
+In a Git repository, inspect the actual checkout even when the user already
+selected a workspace. Run these read-only checks from the target repository:
+
+```sh
+git rev-parse --show-toplevel
+git branch --show-current
+git rev-parse --verify HEAD
+git status --short --branch
+git worktree list --porcelain
+```
+
+An empty branch name means detached HEAD; a failed HEAD lookup may mean no commit
+exists yet. Identify the default branch from repository instructions or the
+relevant remote's local symbolic HEAD (for example,
+`git symbolic-ref --quiet refs/remotes/origin/HEAD`). If unavailable, report the
+default as unknown; do not mistake the current branch or its upstream for proof
+of the default. Always flag `main` and `master` as possible shared base branches.
+
+Report the current absolute checkout path, branch or detached state, and whether
+there are local changes. Compare them with the user's selected path/branch and
+the selected task's recorded workspace. A feature-like branch name, matching
+directory name, or clean tree alone does not prove this is the intended workspace.
+If the recorded or requested workspace differs, inspect that target before using
+it; do not silently continue in the current checkout or substitute another branch.
+
+Unless the user has already chosen for this task, ask whether to **continue in
+the current workspace** or **use a separate worktree and feature branch**. Include
+the actual path and branch in the question and offer an existing task worktree
+when one is available. This choice applies to small edits too. Wait for the
+answer before editing, creating a worktree, or switching branches; read-only
+investigation can continue. A generic request to implement is not a workspace
+choice. Honor an existing explicit choice without asking again when it still
+matches the inspected state.
+
+Keep workspace and branch choices distinct. On `main`, `master`, another known
+shared/default branch, or detached HEAD, choosing the current workspace alone
+does not select a task branch. Offer to create/use a feature branch there, or
+continue on the named shared branch only when the user explicitly chooses it.
+Resolve detached HEAD to a selected branch before editing. For a new branch or
+worktree, establish the intended starting ref/commit from the task and user
+instructions; clarify if ambiguous rather than silently starting from current
+HEAD or the default branch.
+
+After selecting, creating, or switching workspaces, recheck the absolute path,
+branch, HEAD, and local changes there before the first edit. Run subsequent edits
+and verification with that workspace as the explicit working directory; a shell
+`cd` in one tool call may not persist. Record the selected path, branch, starting
+commit, and user's choice in existing task notes or the progress report; if no
+commit exists yet, state that limitation. Recheck on resume or unexpected checkout
+changes and resolve mismatches before further edits.
 
 A new worktree does not include uncommitted changes from the original checkout.
 Account for any task prerequisites in those changes before proceeding; do not
