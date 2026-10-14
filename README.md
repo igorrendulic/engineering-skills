@@ -6,26 +6,14 @@ A small set of AI coding-agent skills for taking work from an idea to a verified
 
 ## Quick start
 
-Install the native Codex plugin (tested with Codex CLI 0.162.1):
+Install in Codex:
 
 ```sh
-codex plugin marketplace add igorrendulic/engineering-skills --ref master
-codex plugin add engineering-skills@engineering-skills
+codex plugin marketplace add igorrendulic/engineering-skills --ref master && \
+  codex plugin add engineering-skills@engineering-skills
 ```
 
-The remote commands require the plugin metadata to be published on `master`.
-To try an unpublished checkout, register its absolute path instead of the GitHub
-source in the first command, then run the same `plugin add` command:
-
-```sh
-codex plugin marketplace add /absolute/path/to/engineering-skills
-codex plugin add engineering-skills@engineering-skills
-```
-
-Start a new session after installing. The plugin supplies the `engineering-skills:`
-namespace; individual skills keep their short names. No MCP server or service
-credentials are needed. See [OpenAI's plugin packaging guidance](https://developers.openai.com/plugins/build/plugins)
-for marketplace management and client-specific setup.
+Start a new Codex session after installing.
 
 Invoke a workflow or ask for help:
 
