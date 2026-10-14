@@ -6,11 +6,21 @@ A small set of AI coding-agent skills for taking work from an idea to a verified
 
 ## Quick start
 
-Install the full bundle into your user-level skills directory:
+Install or update the full bundle with one command:
 
 ```sh
-git clone https://github.com/igorrendulic/engineering-skills.git ~/.agents/skills/engineering-skills
+curl -fsSL https://raw.githubusercontent.com/igorrendulic/engineering-skills/master/install.sh | bash
 ```
+
+The script requires Git and a POSIX shell (macOS/Linux). It installs into `~/.agents/skills/engineering-skills`, reuses an existing clone, and fast-forwards it from GitHub's `master` branch on later runs. It stops on local changes, divergent history, a different repository, or a conflicting path; it never resets or deletes your files. Symlinks are left untouched; update their source checkout manually.
+
+From an existing checkout, you can also run:
+
+```sh
+sh install.sh
+```
+
+For later updates, rerun the download command or run `sh ~/.agents/skills/engineering-skills/install.sh`. To choose another location, pass the destination: `sh install.sh /path/to/skills/engineering-skills`.
 
 Then invoke a workflow in your coding agent:
 
