@@ -9,92 +9,66 @@ description: >
 
 # Plan
 
-Produce the smallest understandable design that meets the requirements, then
-decompose it into cohesive tasks. Prefer reuse and clear ownership over
-speculative extensibility. Scale the detail to the work.
+Design the smallest understandable solution, then break it into verifiable tasks.
+Prefer reuse and clear ownership over speculative extensibility.
 
-Bounded experiments are permitted to answer material planning questions. Do not
-implement production code or execute implementation tasks during this workflow.
-Respect host-mode restrictions, permissions, and user read-only constraints when
-investigating or experimenting. Writing planning artifacts is allowed unless the
-user requests discussion or read-only analysis only.
+Do not implement production code or execute implementation tasks. Bounded planning
+experiments and artifact writes must respect host mode, permissions, and user
+constraints. For discussion-only or read-only requests, deliver the plan in chat.
 
 ## 0. Establish the Goal
 
-Before designing or decomposing work, establish the intended outcome:
+Establish **Goal**, observable **Success criteria**, **Constraints**, and
+**Non-goals** before designing. Distinguish outcomes from implementation choices;
+honor explicitly chosen solutions. Clarify whether a solution is required or
+illustrative when that materially affects the design. Do not invent objectives
+or numerical targets.
 
-1. **Goal:** What problem are we solving, and why?
-2. **Success criteria:** What observable result would constitute success?
-3. **Constraints:** What must remain true?
-4. **Non-goals:** What is explicitly outside the scope?
+Investigate context and resolve material ambiguity before architecture. Ask only
+questions the repository and conversation cannot answer; honor existing decisions
+and authorization. Scale detail to the task. Use success criteria to judge the
+design, task acceptance, and verification.
 
-Distinguish the desired outcome from a proposed implementation. Respect explicitly
-chosen technical solutions as constraints. If it is materially unclear whether a
-proposed solution is required or illustrative, clarify before considering alternatives.
-Do not invent business objectives or numerical targets.
-
-If the goal is unclear, investigate the available context and ask only questions
-needed to resolve material ambiguity. Do not proceed with architectural design
-until the goal is clear enough to evaluate competing solutions. Keep this section
-concise; simple tasks may need only one sentence.
-
-Use the success criteria to evaluate the proposed design and guide task acceptance
-criteria and verification.
-
-Read [plan selection and lifecycle](../../references/plan-lifecycle.md) in full
-before selecting or creating a plan. It owns feature selection, artifact locations,
-and lifecycle transitions for this workflow.
+Before selecting or creating a plan, read
+[plan selection and lifecycle](../../references/plan-lifecycle.md) in full. It owns
+feature selection, artifact paths, and lifecycle transitions.
 
 ## 1. Establish Requirements and Context
 
-Read [code quality](../../references/code-quality.md) and use its applicable
-concerns to define acceptance criteria and verification for the current task.
+Read repository instructions, relevant code, interfaces, callers, and tests.
+Record required behavior, compatibility, important failure cases, and reuse
+candidates with paths and responsibilities. Separate requirements from assumptions.
+Apply [code quality](../../references/code-quality.md) to acceptance and verification.
 
-- Identify required behavior, compatibility requirements, and important failure
-  cases. Separate confirmed requirements from assumptions.
-- Read repository instructions and relevant code, interfaces, callers, and tests.
-  Identify existing components to reuse or extend, with paths and responsibilities.
-- When existing evidence is insufficient, identify the material question a bounded
-  experiment must answer before running it. Use an isolated temporary location for
-  experimental code. Record the result, limitations, and resulting design decision
-  in the plan. Experiments are optional when existing evidence suffices.
-  Keep the plan **Not ready** while the material decision remains unresolved. If a
-  needed experiment cannot be performed, report the blocker and what would resolve it.
-- Ask only about unresolved choices that materially affect behavior, architecture,
-  scope, security, or data integrity and cannot be answered from the repository.
-  Honor decisions and authorization already provided; do not invent requirements.
+When evidence cannot resolve a material decision, define the question before
+running a bounded experiment. Isolate experimental code in a temporary location;
+record results, limitations, and the resulting decision. Experiments are optional
+when evidence suffices. Unresolved decisions or unavailable necessary experiments
+keep the plan **Not ready**; state what would unblock them.
 
 ## 2. Design and Review
 
-Describe the proposed behavior and data flow, component ownership, interfaces,
-and invariants. Explain new components and meaningful trade-offs; omit lengthy
-alternatives analysis where the approach is straightforward.
+Describe behavior, data flow, ownership, interfaces, invariants, new components,
+and meaningful trade-offs. Omit unnecessary alternatives analysis.
 
-Read [structural-review](../structural-review/SKILL.md) in full and apply its
-**plan review** workflow before task breakdown. Supply the requirements, proposed
-design, reuse candidates, and relevant repository evidence. That skill owns the
-structural criteria; do not maintain a second checklist here.
-
-Resolve High and Medium structural findings by revising the design or documenting
-an evidence-backed reason to accept the trade-off. An unresolved High or Medium
-finding remains a blocker. Low findings do not block readiness. Review again only
-when a revision or new evidence warrants it. Require **Review status: Complete**
-under structural-review's evidence rules. If the skill cannot be loaded or the
-review is **Pending**, keep the plan **Not ready** and report what would unblock it.
+Read [structural-review](../structural-review/SKILL.md) in full and perform its
+**plan review** before task breakdown. Supply requirements, design, reuse
+candidates, and repository evidence; that skill owns the structural criteria.
+Resolve High and Medium findings through revisions or evidence-backed acceptance
+of trade-offs. Low findings do not block. Repeat review only when changes warrant.
+Require **Review status: Complete**; unresolved High/Medium findings, a **Pending**
+review, or an unavailable review skill keep the plan **Not ready**.
 
 ## 3. Decompose and Order Tasks
 
-- Prefer vertical slices that deliver verifiable behavior. Use separate contract,
-  migration, or investigation tasks when they are real prerequisites.
-- Size tasks for one focused implementation and verification session, based on
-  cohesion and uncertainty rather than file counts.
-- Establish dependencies and validate high-risk assumptions early. Keep the
-  system working between steps where practical.
-- Mark tasks parallelizable only when their responsibilities, file changes, and
-  interfaces are independent. Establish shared contracts first; keep conflicting
-  edits, shared mutable state, and ordered migrations sequential.
+- Prefer vertical slices sized for one focused implementation and verification
+  session. Separate contracts, migrations, or investigations when prerequisites.
+- Record dependencies, validate risky assumptions early, and keep the system
+  working between steps where practical.
+- Parallelize only independent responsibilities, edits, and interfaces. Establish
+  shared contracts first; sequence conflicting edits, mutable state, and migrations.
 
-For each task, record:
+For each task use:
 
 ```markdown
 ### Task N: Title
@@ -105,58 +79,39 @@ For each task, record:
 - Verification: Relevant tests, checks, or runtime evidence.
 ```
 
-Choose verification proportional to the change. Include structural-review in
-**code review** mode at substantial implementation checkpoints, particularly when
-ownership, interfaces, or abstractions change. Plan to resolve significant findings
-before dependent work proceeds. Include independent correctness review according
-to [implementation's review policy](../implementation/SKILL.md#independent-correctness-review),
-with verification and repair time in the relevant tasks. Structural review does
-not replace it. A completed plan is not evidence that these checks have run or
-that implementation tasks are complete.
+Scale verification to the change. Include structural **code review** at substantial
+checkpoints, especially ownership, interface, or abstraction changes; resolve
+significant findings before dependent work. Also include independent correctness
+review under [implementation's review policy](../implementation/SKILL.md#independent-correctness-review).
+Allow verification and repair time; structural review does not replace correctness
+review.
 
 ## 4. Review Verification Coverage
 
-Review the proposed verification against every success criterion. Check that it
-demonstrates the complete outcome, including integrated behavior where relevant.
-Reuse task-level checks when they provide sufficient coverage; do not require
-duplicate tests or a new test suite. Resolve gaps by revising the planned checks,
-or keep the plan **Not ready** with the specific coverage blocker.
-
-This review assesses planned verification; it does not mean implementation checks
-have run.
+Check that planned verification demonstrates every success criterion and the
+complete outcome, including integrated behavior where relevant. Reuse sufficient
+task checks without duplicate tests or a new suite. Revise checks to close gaps
+or keep the plan **Not ready** with specific coverage blockers.
 
 ## 5. Deliver the Plan
 
 Mark the whole plan **Ready for implementation** only when requirements and success
-criteria are clear, structural plan review is complete, material decisions and
-findings are resolved, tasks have dependencies, acceptance criteria, and
-verification defined, and the coverage review confirms that planned verification
-demonstrates every success criterion.
+criteria are clear, structural review is Complete, material decisions and blocking
+findings are resolved, every task defines dependencies, acceptance and verification,
+and coverage review confirms every success criterion is demonstrated by planned
+checks. Otherwise mark **Not ready** and give each blocker's resolution action.
+Any task blocked by an unresolved decision blocks readiness; normal ordering
+dependencies do not.
 
-Otherwise, mark it **Not ready** and list each blocker with the action or decision
-needed to resolve it. Do not label the overall plan ready while any task remains
-blocked by an unresolved decision. Normal ordering dependencies between
-implementation tasks are not planning blockers.
+Readiness means plan completeness, not execution authorization, completed tasks,
+or passed implementation checks. Planned tests need not have run. Respect existing
+approval boundaries without adding per-task approvals.
 
-Readiness describes the completeness of the plan. It does not authorize execution
-or mean implementation checks have passed. Specified implementation tests do not
-need to have run for the plan to be ready.
+Save artifacts and lifecycle under the shared contract. Organize the plan around
+goal and success criteria, constraints and non-goals, existing components and
+design with paths, decisions and review outcomes, ordered tasks, and material
+risks, assumptions, and questions. Omit empty sections. Keep todo as a short
+checklist linking to task details; leave implementation items unchecked.
 
-Save artifacts and record lifecycle according to the shared plan selection and
-lifecycle contract.
-
-Keep the plan organized around:
-
-1. Goal, success criteria, constraints, and non-goals.
-2. Existing components and proposed design, with relevant paths.
-3. Meaningful decisions and structural-review outcomes.
-4. Ordered tasks with acceptance criteria and verification.
-5. Material risks, assumptions, and unresolved questions.
-
-Omit empty sections. Keep the todo file as a short checklist linking to task
-details in the plan. Leave implementation items unchecked. For discussion-only
-requests, present the same information in chat without creating files.
-
-Report the selected feature, lifecycle when known, readiness, artifact paths,
-and any blockers or decisions needed before implementation. Respect existing
-approval boundaries without adding an approval step after every task.
+Report selected feature, lifecycle when known, readiness, artifact paths, and
+remaining blockers or decisions.
